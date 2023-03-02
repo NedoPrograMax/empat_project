@@ -1,7 +1,12 @@
-import 'package:empat_app/user.dart';
+import 'package:empat_app/bloc/bloc.dart';
+import 'package:empat_app/users.dart';
+import 'package:empat_app/widgets/type_selector.dart';
+import 'package:empat_app/widgets/users_presenter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
+  Users.instance().fillWithDummyData();
   runApp(const MyApp());
 }
 
@@ -30,31 +35,21 @@ class AppContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final me = User();
-    me.name = "Maksym Loia";
-    return Center(
-      child: NamePresenter(name: me.fullName),
-    );
-  }
-}
-
-class NamePresenter extends StatelessWidget {
-  const NamePresenter({
-    Key? key,
-    required this.name,
-  }) : super(key: key);
-
-  final String name;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      name,
-      style: const TextStyle(
-        fontSize: 58,
-        fontStyle: FontStyle.italic,
-        fontWeight: FontWeight.bold,
-        color: Colors.red,
+    return BlocProvider<AppBloc>(
+      create: (context) => AppBloc(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          Flexible(
+            child: TypeSelector(),
+            fit: FlexFit.loose,
+            flex: 1,
+          ),
+          Expanded(
+            child: UsersPresenter(),
+            flex: 5,
+          ),
+        ],
       ),
     );
   }
