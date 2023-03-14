@@ -31,8 +31,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.2
-  bloc: ^8.1.1
+ # flutter_bloc: ^8.1.2
+ # bloc: ^8.1.1
+  provider: ^6.0.5
+  animated_theme_switcher: "^2.0.8"
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -61,17 +63,15 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets\avatar_1.jpg
-    - assets\background_1.jpg
-    - assets\avatar_2.png
-    - assets\avatar_3.png
-    - assets\avatar_4.jpg
-    - assets\avatar_5.jpg
-    - assets\avatar_6.png
-    - assets\avatar_7.png
-    - assets\avatar_8.png
-    - assets\avatar_9.png
-    - assets\avatar_10.jpg
+    - assets\images\ghostbusters.jpg
+    - assets\images\naked_gun.jpg
+    - assets\images\police_academy.jpg
+    - assets\images\johny_english.jpg
+    - assets\images\men_in_black.jpg
+    - assets\images\Le_gendarme_de_Saint-Tropez.jpg
+    - assets\images\the_godfather.jpg
+    - assets\images\movie_background.jpg
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,11 +1,12 @@
-import 'package:empat_app/models/category_type.dart';
+import 'package:empat_app/models/categories.dart';
+import 'package:flutter/material.dart';
 
 class Category {
-  final CategoryType type;
-  final int countOfUnread;
+  final Color color;
+  final Categories type;
 
-  Category({
+  const Category({
+    required this.color,
     required this.type,
-    required this.countOfUnread,
   });
 }

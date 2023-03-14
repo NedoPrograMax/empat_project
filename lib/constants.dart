@@ -1,99 +1,98 @@
-import 'package:empat_app/extensions.dart';
-import 'package:empat_app/models/category_type.dart';
-import 'package:empat_app/models/chat.dart';
-import 'package:empat_app/models/drawer_item_model.dart';
+import 'package:empat_app/models/categories.dart';
+import 'package:empat_app/models/category.dart';
+import 'package:empat_app/models/movie.dart';
+import 'package:empat_app/widgets/favorite/favorite_screen.dart';
+import 'package:empat_app/widgets/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
-final drawerItems = [
-  DrawerItemModel(icon: Icons.people_alt_outlined, name: "New group"),
-  DrawerItemModel(icon: Icons.person_outline, name: "Contacts"),
-  DrawerItemModel(icon: Icons.phone_outlined, name: "Calls"),
-  DrawerItemModel(icon: Icons.person_pin_circle_outlined, name: "New group"),
-  DrawerItemModel(icon: Icons.bookmark_outline, name: "Saved"),
-  DrawerItemModel(icon: Icons.settings_outlined, name: "Settings"),
-  DrawerItemModel(icon: Icons.person_add_outlined, name: "Add Friends"),
-  DrawerItemModel(icon: Icons.question_mark_outlined, name: "Possibilities"),
+const tabItems = [
+  BottomNavigationBarItem(
+    icon: Icon(Icons.home_outlined),
+    activeIcon: Icon(Icons.home),
+    label: "Home",
+  ),
+  BottomNavigationBarItem(
+    icon: Icon(Icons.favorite_outline),
+    activeIcon: Icon(Icons.favorite),
+    label: "Favorite",
+  ),
 ];
 
-final chatItems = [
-  Chat(
-    immageAsset: "assets\\avatar_1.jpg",
-    username: "Andrew",
-    lastMessage: "Hello! I wanted to talk with you about our little situation",
-    time: const TimeOfDay(hour: 9, minute: 15),
-    countOfUnread: 0,
-    type: CategoryType.Work,
-  ),
-  Chat(
-    immageAsset: "assets\\avatar_2.png",
-    username: "Jack",
-    lastMessage: "Good Mooooorning",
-    time: const TimeOfDay(hour: 4, minute: 20),
-    countOfUnread: 0,
-    type: CategoryType.Personal,
-  ),
-  Chat(
-    immageAsset: "assets\\avatar_7.png",
-    username: "Ross",
-    lastMessage: "Have a good day",
-    time: const TimeOfDay(hour: 8, minute: 44),
-    countOfUnread: 0,
-    type: CategoryType.Work,
-  ),
-  Chat(
-    immageAsset: "assets\\avatar_4.jpg",
-    username: "Judy",
-    lastMessage: "I miss you....",
-    time: const TimeOfDay(hour: 10, minute: 44),
-    countOfUnread: 12,
-    type: CategoryType.Personal,
-  ),
-  Chat(
-    immageAsset: "assets\\avatar_3.png",
-    username: "Amily",
-    lastMessage: "Well... I don't think so",
-    time: const TimeOfDay(hour: 13, minute: 21),
-    countOfUnread: 1,
-    type: CategoryType.Personal,
-  ),
-  Chat(
-    immageAsset: "assets\\avatar_6.png",
-    username: "Joanna",
-    lastMessage: "How you doin?",
-    time: const TimeOfDay(hour: 14, minute: 45),
-    countOfUnread: 0,
-    type: CategoryType.Personal,
-  ),
-  Chat(
-    immageAsset: "assets\\avatar_5.jpg",
-    username: "Mr Robinson",
-    lastMessage:
-        "Your task for today would be to develop an awesome mobila application using...",
-    time: const TimeOfDay(hour: 12, minute: 10),
-    countOfUnread: 1,
-    type: CategoryType.Work,
-  ),
-  Chat(
-    immageAsset: "assets\\avatar_8.png",
-    username: "Jackson",
-    lastMessage: "I hope you're gonna do it in time",
-    time: const TimeOfDay(hour: 13, minute: 23),
-    countOfUnread: 0,
-    type: CategoryType.Work,
-  ),
-  Chat(
-    immageAsset: "assets\\avatar_9.png",
-    username: "Chandler",
-    lastMessage:
-        "I'm not great at the advice, can I intereset you with a sarcatic comment?",
-    time: const TimeOfDay(hour: 14, minute: 36),
-    countOfUnread: 2,
-    type: CategoryType.Personal,
-  ),
-]..sortByTime();
+const tabs = [
+  HomeScreen(),
+  FavoriteScreen(),
+];
 
-late final categories = chatItems.getCategories();
+const categories = [
+  Category(
+    color: Colors.red,
+    type: Categories.Action,
+  ),
+  Category(
+    color: Colors.blue,
+    type: Categories.Drama,
+  ),
+  Category(
+    color: Colors.amber,
+    type: Categories.Comedy,
+  ),
+];
 
-const mainColor = Color.fromARGB(252, 29, 39, 51);
-
-const subMainColor = Color.fromRGBO(88, 163, 229, 1);
+const constMovies = [
+  Movie(
+    id: 1,
+    title: "Ghostbusters",
+    imageAsset: "assets\\images\\ghostbusters.jpg",
+    description:
+        "Three parapsychologists forced out of their university funding set up shop as a unique ghost removal service in New York City, attracting frightened yet skeptical customers.",
+    category: Categories.Comedy,
+  ),
+  Movie(
+    id: 2,
+    title: "Police Academy",
+    imageAsset: "assets\\images\\police_academy.jpg",
+    description:
+        "A group of good-hearted, but incompetent misfits enter the police academy, but the instructors there are not going to put up with their pranks.",
+    category: Categories.Comedy,
+  ),
+  Movie(
+    id: 3,
+    title: "The Naked Gun",
+    imageAsset: "assets\\images\\naked_gun.jpg",
+    description:
+        "Incompetent police Detective Frank Drebin must foil an attempt to assassinate Queen Elizabeth II.",
+    category: Categories.Comedy,
+  ),
+  Movie(
+    id: 4,
+    title: "Johny English",
+    imageAsset: "assets\\images\\johny_english.jpg",
+    description:
+        "After a sudden attack on MI5, Johnny English, Britain's most confident, yet unintelligent spy, becomes Britain's only spy.",
+    category: Categories.Comedy,
+  ),
+  Movie(
+    id: 5,
+    title: "Men in Black",
+    imageAsset: "assets\\images\\men_in_black.jpg",
+    description:
+        "A police officer joins a secret organization that polices and monitors extraterrestrial interactions on Earth.",
+    category: Categories.Action,
+  ),
+  Movie(
+    id: 6,
+    title: "Le gendarme de Saint-Tropezk",
+    imageAsset: "assets\\images\\Le_gendarme_de_Saint-Tropez.jpg",
+    description:
+        "Gendarme Ludovic Cruchot is re-assigned to the French Riviera seaside resort town of Saint-Tropez where petty criminals and his own daughter give him a hard time.",
+    category: Categories.Comedy,
+  ),
+  Movie(
+    id: 7,
+    title: "The Godfather",
+    imageAsset: "assets\\images\\the_godfather.jpg",
+    description:
+        "The aging patriarch of an organized crime dynasty in postwar New York City transfers control of his clandestine empire to his reluctant youngest son.",
+    category: Categories.Drama,
+  ),
+];
