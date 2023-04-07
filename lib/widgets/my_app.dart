@@ -1,34 +1,35 @@
-import 'package:empat_app/providers/steppers_provider.dart';
-import 'package:empat_app/providers/students_provider.dart';
-import 'package:empat_app/routes/routes.dart';
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+
+import 'package:empat_app/widgets/main/initial_screen.dart';
 
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../providers/student_provider.dart';
-
-class MyApp extends StatelessWidget {
+class MyApp extends HookWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => StudentsProvider(),
+    final sharedPrefsFuture =
+        useMemoized(() => SharedPreferences.getInstance());
+    final prefs = useFuture(sharedPrefsFuture);
+    if (prefs.hasData) {
+      final isLightTheme = prefs.data!.getBool("isLightTheme") ?? false;
+
+      return ThemeProvider(
+        duration: const Duration(milliseconds: 300),
+        initTheme: isLightTheme ? ThemeData.light() : ThemeData.dark(),
+        builder: (p0, theme) => MaterialApp(
+          theme: theme,
+          initialRoute: "/",
+          routes: {
+            "/": (_) => const InitialScreen(),
+          },
         ),
-        ChangeNotifierProvider(
-          create: (_) => StudentProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => SteppersProvider(),
-        ),
-      ],
-      child: const MaterialApp(
-        onGenerateRoute: RouteGenerator.generateRoute,
-        initialRoute: RouteGenerator.mainScreen,
-      ),
-    );
+      );
+    }
+    return Container();
   }
 }

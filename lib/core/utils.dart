@@ -1,26 +1,26 @@
-import 'package:flutter/material.dart';
+import 'package:empat_app/core/extensions.dart';
 
-import 'constants.dart';
-
-extension Normalization on num {
-  num normalized(
-    num selfRangeMin,
-    num selfRangMax, [
-    num normalizedRangMin = 0.0,
-    num normalizedRangeMax = 1.0,
-  ]) =>
-      (normalizedRangeMax - normalizedRangMin) *
-          ((this - selfRangeMin) / (selfRangMax - selfRangeMin)) +
-      normalizedRangMin;
+String dayOfWeekFromSeconds(int seconds) {
+  final date = seconds.secondsToDateTime();
+  final day = date.weekday;
+  return day.dayOfWeek();
 }
 
-GlobalKey<FormState>? getFormKeyById(int id) {
-  switch (id) {
-    case 0:
-      return nameForm;
-    case 1:
-      return universityForm;
-    default:
-      return null;
+String hourFromSeconds(int seconds) {
+  final date = seconds.secondsToDateTime();
+  final hour = date.hour;
+  var result = hour.toString();
+  if (hour < 10) {
+    result = "0$result";
   }
+  return "$result:00";
+}
+
+double getWind(int windDirection, double compas) {
+  compas = -compas;
+  final relativeWind = windDirection + 180;
+  final difference = relativeWind + compas;
+  final rotated = difference - 90;
+  final converted = rotated / 360;
+  return converted.remainder(1);
 }

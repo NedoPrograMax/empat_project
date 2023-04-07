@@ -1,40 +1,45 @@
-import 'package:empat_app/models/student.dart';
-import 'package:empat_app/providers/steppers_provider.dart';
-import 'package:empat_app/providers/student_provider.dart';
-import 'package:empat_app/routes/routes.dart';
-import 'package:empat_app/widgets/info/info_screen.dart';
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:empat_app/state/cubit/day_cubit.dart';
+import 'package:empat_app/models/dtos/weather_dto.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'custom_app_bar.dart';
-import 'my_table.dart';
+import '../../models/weather.dart';
+import 'current/current_content.dart';
+
+import 'forecast/forecast_content.dart';
+import 'main_fab.dart';
 
 class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
+  final Weather weather;
+  const MainScreen({
+    required this.weather,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final phoneSize = MediaQuery.of(context).size;
-    final appBarSize = Size(phoneSize.width, phoneSize.height * 0.05);
-    return Scaffold(
-      appBar: CustomAppBar(size: appBarSize),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 20,
+    return ThemeSwitchingArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        floatingActionButton: MainFAB(),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: BlocProvider<DayCubit>(
+                create: (context) => DayCubit(weather.hours),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CurrentContent(weather: weather),
+                    ForecastContent(weather),
+                  ],
+                ),
+              ),
+            ),
           ),
-          const MyTable(),
-          ElevatedButton(
-            onPressed: () {
-              context.read<StudentProvider>().student = Student();
-              context.read<SteppersProvider>().reset();
-              Navigator.of(context).pushNamed(RouteGenerator.infoScreen);
-            },
-            child: const Text("Add a student"),
-          ),
-        ],
+        ),
       ),
     );
   }
