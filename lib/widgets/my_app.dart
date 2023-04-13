@@ -1,35 +1,40 @@
-import 'package:animated_theme_switcher/animated_theme_switcher.dart';
-
-import 'package:empat_app/widgets/main/initial_screen.dart';
-
+import 'package:empat_app/core/constants.dart';
+import 'package:empat_app/routes/routes_generator.dart';
+import 'package:empat_app/state/app_cubit/app_cubit.dart';
+import 'package:empat_app/state/playlist_cubit/playlist_cubit.dart';
+import 'package:empat_app/state/search_cubit/search_cubit.dart';
+import 'package:empat_app/widgets/playlists/playlist_types.dart';
+import 'package:empat_app/widgets/playlists/playlists_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-class MyApp extends HookWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final sharedPrefsFuture =
-        useMemoized(() => SharedPreferences.getInstance());
-    final prefs = useFuture(sharedPrefsFuture);
-    if (prefs.hasData) {
-      final isLightTheme = prefs.data!.getBool("isLightTheme") ?? false;
-
-      return ThemeProvider(
-        duration: const Duration(milliseconds: 300),
-        initTheme: isLightTheme ? ThemeData.light() : ThemeData.dark(),
-        builder: (p0, theme) => MaterialApp(
-          theme: theme,
-          initialRoute: "/",
-          routes: {
-            "/": (_) => const InitialScreen(),
-          },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => AppCubit(),
         ),
-      );
-    }
-    return Container();
+        BlocProvider(
+          create: (_) => PlaylistCubit(),
+        ),
+      ],
+      child: MaterialApp(
+        onGenerateRoute: RoutesGenerator.generateRoute,
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: backgroundColor,
+          appBarTheme: const AppBarTheme(
+            color: backgroundColor,
+          ),
+        ),
+        themeMode: ThemeMode.dark,
+        home: const PlaylistsScreen(),
+      ),
+    );
   }
 }

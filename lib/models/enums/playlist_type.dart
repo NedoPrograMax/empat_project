@@ -1,0 +1,4 @@
+enum PlaylistType {
+  PERSONAL,
+  ADDED;
+}

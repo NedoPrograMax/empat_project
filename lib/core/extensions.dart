@@ -1,77 +1,54 @@
-import 'package:empat_app/models/hour.dart';
+import 'package:empat_app/core/constants.dart';
+import 'package:empat_app/models/playlist.dart';
+import 'package:empat_app/models/song.dart';
+import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
+import 'package:palette_generator/palette_generator.dart';
 
-extension JsonConverters on List<Map<String, dynamic>> {
-  List<dynamic> getHours() {
-    final List<dynamic> result = [];
-    forEach((value) {
-      final List<dynamic> hours = value["hour"];
-      result.addAll(hours);
-    });
-    return result;
-  }
-
-  List<dynamic> getDays() {
-    final List<dynamic> result = [];
-    forEach((value) {
-      final Map<String, dynamic> days = value["day"];
-      days.putIfAbsent("date_epoch", () => value["date_epoch"]);
-      result.add(days);
-    });
-    return result;
+extension ImageExtension on ImageProvider {
+  Future<Color> getDominantColor() async {
+    final paletteGenerator = await PaletteGenerator.fromImageProvider(this);
+    return paletteGenerator.darkMutedColor?.color ?? surfaceColor;
   }
 }
 
-extension DateTimeChecker on DateTime {
-  bool isTheSameDay(DateTime otherDay) {
-    final firstDay = DateTime(year, month, day);
-    final secondDay = DateTime(otherDay.year, otherDay.month, otherDay.day);
-    return firstDay.isAtSameMomentAs(secondDay);
+extension SongsExtension on List<Song> {
+  Future<void> setColors() {
+    final futureList = map(
+      (song) async => song.mainColor =
+          song.mainColor ?? await song.image.getDominantColor(),
+    );
+    return Future.wait(futureList);
   }
+
+  List<Song> search(String text) => where(
+        (song) =>
+            song.title.toLowerCase().contains(text.toLowerCase()) ||
+            song.band.toLowerCase().contains(text.toLowerCase()),
+      ).toList();
+
+  List<AudioSource> toAudioSources() => map(
+        (song) => AudioSource.asset(
+          song.musicAsset,
+          tag: MediaItem(
+            // Specify a unique ID for each media item:
+            id: song.id,
+            // Metadata to display in the notification:
+            album: song.band,
+            title: song.title,
+            artUri: Uri.parse(song.imageUrl),
+          ),
+        ),
+      ).toList();
 }
 
-extension IntConverter on int {
-  DateTime secondsToDateTime() =>
-      DateTime.fromMillisecondsSinceEpoch(this * 1000);
-
-  String dayOfWeek() {
-    switch (this) {
-      case 1:
-        return "Monday";
-      case 2:
-        return "Tuesday";
-      case 3:
-        return "Wednesday";
-      case 4:
-        return "Thursday";
-      case 5:
-        return "Friday";
-      case 6:
-        return "Saturday";
-      case 7:
-        return "Sunday";
-      default:
-        return "Secret day";
-    }
-  }
-}
-
-extension DoubleConverter on double? {
-  double getRealHeading() {
-    if (this == null) return 0;
-    if (this! < 0) return 360 + this!;
-    if (this! > 0) return this!;
-    return this!;
-  }
-}
-
-extension HoursConerter on List<Hour> {
-  getWithDay(DateTime day) {
-    final todays =
-        where((hour) => hour.time.secondsToDateTime().isTheSameDay(day));
-    return todays.where((hour) {
-      final difference =
-          hour.time.secondsToDateTime().difference(DateTime.now());
-      return difference.inMinutes > -60;
-    }).toList();
+extension DurationExtension on Duration {
+  String get textTime {
+    final minutes = inMinutes;
+    final seconds = inSeconds.remainder(60);
+    final minutesText = minutes < 10 ? "0$minutes" : "$minutes";
+    final secondsText = seconds < 10 ? "0$seconds" : "$seconds";
+    return "$minutesText:$secondsText";
   }
 }

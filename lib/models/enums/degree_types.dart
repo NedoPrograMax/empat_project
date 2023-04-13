@@ -1,4 +1,0 @@
-enum DegreeTypes {
-  Imperial,
-  Metric;
-}

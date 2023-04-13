@@ -34,7 +34,7 @@ dependencies:
   flutter_bloc: ^8.1.2
   bloc: ^8.1.1
   provider: ^6.0.5
-  animated_theme_switcher: "^2.0.8"
+  animated_theme_switcher: "^2.0.8"#
   uuid: ^3.0.7
   cached_network_image: ^3.2.3
   flutter_hooks: ^0.18.6
@@ -48,6 +48,9 @@ dependencies:
   path_provider: ^2.0.14
   shared_preferences: ^2.1.0
   dio: ^5.1.1
+  palette_generator: ^0.3.3+2
+  just_audio: ^0.9.32
+  just_audio_background: ^0.0.1-beta.9
 
  # configurable_expansion_tile_null_safety: ^3.1.1
   # The following adds the Cupertino Icons font to your application.
@@ -88,6 +91,18 @@ flutter:
     - assets\images\Le_gendarme_de_Saint-Tropez.jpg
     - assets\images\the_godfather.jpg
     - assets\images\movie_background.jpg
+    - assets\music\test_music.mp3
+    - assets\music\Skusta Clee - Testing.mp3
+    - assets\music\Soundtrack 4 Life - ROCK AROUND THE CLOCK 3.mp3
+    - assets\music\Nuisance - Terracotta Instrumental (SAND).mp3.mp3
+    - assets\music\John Lopker _ Popular USA Majority LIVE - My Sweet Liberty _ Freedom = Responsibility.mp3
+    - assets\music\HoliznaPATREON - Finally.mp3
+    - assets\music\Edoy - Caelum.mp3
+    - assets\music\Mr Smith - Constance Chill.mp3
+    - assets\music\REDCVT - Endless Winter.mp3
+    - assets\music\MASERPAN - Why Not_.mp3
+    - assets\music\yumenoma - spring rain.mp3
+    - assets\music\Dee Yan-Key - Happy Birthday to You (Swing).mp3
 
 
 
