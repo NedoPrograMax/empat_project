@@ -20,7 +20,10 @@ class PlaylistItem extends StatelessWidget {
           context.read<PlaylistCubit>().setNewSongs(playlist.songs);
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => PlaylistScreen(playlist),
+              builder: (context) => PlaylistScreen(
+                playlist,
+                key: ValueKey(1),
+              ),
             ),
           );
         },

@@ -3,6 +3,7 @@ import 'package:empat_app/state/playlist_cubit/playlist_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../models/song_route_argument.dart';
 import '../../routes/routes_generator.dart';
 import '../square_image.dart';
 
@@ -17,10 +18,10 @@ class SongItem extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: () {
-          context.read<PlaylistCubit>().setCurrentSongIndex(index);
+          context.read<PlaylistCubit>().setCurrentSongIndex(index, false);
           Navigator.of(context).pushNamed(
             RoutesGenerator.songRoute,
-            arguments: song,
+            arguments: SongRouteArgument(song: song, isForward: true),
           );
         },
         child: Ink(

@@ -7,11 +7,16 @@ import 'listen_button.dart';
 
 class PlaylistAppBar extends StatelessWidget {
   final Playlist playlist;
-  const PlaylistAppBar(this.playlist, {super.key});
+  final VoidCallback goBack;
+  const PlaylistAppBar(this.playlist, this.goBack, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      leading: IconButton(
+        onPressed: goBack,
+        icon: const Icon(Icons.arrow_back),
+      ),
       backgroundColor: surfaceColor,
       shadowColor: Colors.transparent,
       elevation: 0,

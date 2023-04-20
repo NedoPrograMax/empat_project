@@ -6,7 +6,7 @@ class PlaylistCubitState {
   final Stream<bool> isPlaying;
   final Stream<Duration> durationStream;
   final Stream<Duration?> songDuration;
-  final int? whereToNavigate;
+  final Stream<int?>? currentSongStream;
 
   PlaylistCubitState copyWith({
     List<Song>? songs,
@@ -14,7 +14,7 @@ class PlaylistCubitState {
     Stream<bool>? isPlaying,
     Stream<Duration?>? songDuration,
     Stream<Duration>? durationStream,
-    int? whereToNavigate,
+    Stream<int?>? currentSongStream,
   }) =>
       PlaylistCubitState(
         songs: songs ?? this.songs,
@@ -22,14 +22,15 @@ class PlaylistCubitState {
         isPlaying: isPlaying ?? this.isPlaying,
         durationStream: durationStream ?? this.durationStream,
         songDuration: songDuration ?? this.songDuration,
-        whereToNavigate: whereToNavigate,
+        currentSongStream: currentSongStream ?? this.currentSongStream,
       );
+
   PlaylistCubitState({
     required this.songs,
     required this.currentSongIndex,
     required this.isPlaying,
     required this.durationStream,
     required this.songDuration,
-    this.whereToNavigate,
+    required this.currentSongStream,
   });
 }

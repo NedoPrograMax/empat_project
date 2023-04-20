@@ -12,8 +12,7 @@ import '../../models/song.dart';
 
 class PlaylistCubit extends Cubit<PlaylistCubitState> {
   final AudioPlayer player = AudioPlayer()..setLoopMode(LoopMode.all);
-  int previousSongIndex = 0;
-  bool isForward = true;
+  bool isNewPlaylist = false;
   PlaylistCubit()
       : super(
           PlaylistCubitState(
@@ -22,6 +21,7 @@ class PlaylistCubit extends Cubit<PlaylistCubitState> {
             isPlaying: Stream.value(false),
             durationStream: const Stream.empty(),
             songDuration: Stream.value(const Duration()),
+            currentSongStream: null,
           ),
         ) {
     emit(
@@ -34,7 +34,6 @@ class PlaylistCubit extends Cubit<PlaylistCubitState> {
   }
 
   void goToNextSong() async {
-    isForward = true;
     late final int newIndex;
     if (state.currentSongIndex != state.songs.length - 1) {
       newIndex = state.currentSongIndex + 1;
@@ -45,7 +44,6 @@ class PlaylistCubit extends Cubit<PlaylistCubitState> {
   }
 
   void goToPreviousSong() async {
-    isForward = false;
     late final int newIndex;
     if (state.currentSongIndex != 0) {
       newIndex = state.currentSongIndex - 1;
@@ -56,6 +54,7 @@ class PlaylistCubit extends Cubit<PlaylistCubitState> {
   }
 
   Future<void> setNewSongs(List<Song> songs) async {
+    isNewPlaylist = true;
     await songs.setColors();
     final playlist = ConcatenatingAudioSource(
       useLazyPreparation: true,
@@ -67,20 +66,12 @@ class PlaylistCubit extends Cubit<PlaylistCubitState> {
       initialIndex: 0,
       initialPosition: Duration.zero,
     );
-    player.currentIndexStream.listen(
-      (index) {
-        if (index != null) {
-          emit(
-            state.copyWith(
-              currentSongIndex: index,
-              whereToNavigate: index,
-            ),
-          );
-        }
-      },
-    );
+
     emit(
-      state.copyWith(songs: songs, currentSongIndex: 0),
+      state.copyWith(
+        songs: songs,
+        currentSongIndex: 0,
+      ),
     );
   }
 
@@ -88,10 +79,27 @@ class PlaylistCubit extends Cubit<PlaylistCubitState> {
     return currentSong.mainColor ?? surfaceColor;
   }
 
-  Song get currentSong => state.songs[state.currentSongIndex];
+  Song get currentSong {
+    if (state.songs.length <= state.currentSongIndex) {
+      return Song.empty();
+    } else
+      return state.songs[state.currentSongIndex];
+  }
 
-  void setCurrentSongIndex(int index) async {
-    await player.seek(const Duration(), index: index);
+  void setCurrentSongIndex(int index, [bool doEmit = true]) async {
+    if (index != player.currentIndex) {
+      await player.seek(const Duration(), index: index);
+    } else {
+      await Future.delayed(const Duration(milliseconds: 500));
+    }
+
+    emit(
+      state.copyWith(
+        currentSongIndex: doEmit ? index : null,
+        currentSongStream: state.currentSongStream ?? player.currentIndexStream,
+      ),
+    );
+    isNewPlaylist = false;
   }
 
   void addNewSong(Song song) {
@@ -105,17 +113,6 @@ class PlaylistCubit extends Cubit<PlaylistCubitState> {
       player.pause();
     } else {
       player.play();
-    }
-  }
-
-  void navigateTo(int songIndex, BuildContext context) {
-    if (songIndex != previousSongIndex) {
-      Navigator.of(context).pushNamed(
-        SongRoutesGenerator.initialRoute,
-        arguments: SongRouteArgument(
-            song: state.songs[songIndex], isForward: isForward),
-      );
-      previousSongIndex = songIndex;
     }
   }
 

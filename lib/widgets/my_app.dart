@@ -10,6 +10,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'main_screen.dart';
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -25,7 +27,6 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        onGenerateRoute: RoutesGenerator.generateRoute,
         theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: backgroundColor,
           appBarTheme: const AppBarTheme(
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         themeMode: ThemeMode.dark,
-        home: const PlaylistsScreen(),
+        home: const MainScreen(),
       ),
     );
   }

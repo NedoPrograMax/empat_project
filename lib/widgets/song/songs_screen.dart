@@ -8,26 +8,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../routes/song_routes_generator.dart';
 
 class SongsScreen extends StatelessWidget {
-  const SongsScreen({super.key});
+  SongsScreen({super.key});
+
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    final navigator = Navigator(
-      onGenerateRoute:
-          SongRoutesGenerator(context.read<PlaylistCubit>().currentSong)
-              .generateRoute,
-      initialRoute: SongRoutesGenerator.initialRoute,
-    );
     return BlocBuilder<PlaylistCubit, PlaylistCubitState>(
       builder: (context, state) => Scaffold(
         appBar: AppBar(
           backgroundColor: state.songs[state.currentSongIndex].mainColor,
           elevation: 0,
         ),
-        body: navigator,
       ),
-      buildWhen: (previous, current) =>
-          previous.currentSongIndex != current.currentSongIndex,
     );
   }
 }

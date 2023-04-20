@@ -1,4 +1,5 @@
 import 'package:empat_app/widgets/playlists/playlists_screen.dart';
+import 'package:empat_app/widgets/song/song_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -6,7 +7,7 @@ import '../widgets/song/songs_screen.dart';
 
 class RoutesGenerator {
   static const initialRoute = "/";
-  static const songRoute = "/songs";
+  static const songRoute = "/song";
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case initialRoute:
@@ -17,7 +18,7 @@ class RoutesGenerator {
       case songRoute:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => const SongsScreen(),
+          builder: (context) => SongScreen(),
         );
       default:
         return MaterialPageRoute(

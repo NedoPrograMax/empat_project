@@ -26,17 +26,17 @@ class SongScreenContent extends HookWidget {
     final width = size.width;
     final dominantColor = song.mainColor ?? surfaceColor;
 
-    return BlocListener<PlaylistCubit, PlaylistCubitState>(
-      key: const ValueKey(131),
-      listenWhen: (previous, current) => current.whereToNavigate != null,
-      listener: (context, state) {
-        if (state.whereToNavigate != null) {
-          /*    context
-              .read<PlaylistCubit>()
-              .navigateTo(state.whereToNavigate!, context); */
-        }
-      },
-      child: Container(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: dominantColor,
+        shadowColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () => Navigator.of(context)
+              .pushNamedAndRemoveUntil("/", (route) => false),
+          icon: Icon(Icons.arrow_back),
+        ),
+      ),
+      body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
