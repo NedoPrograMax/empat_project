@@ -37,9 +37,8 @@ class CustomAnimation extends HookWidget {
       CurvedAnimation(parent: secondControler, curve: Curves.easeInCirc),
     );
 
-    firstController.forward();
     useEffect(() {
-      var lastFirst = AnimationStatus.forward;
+      var lastFirst = AnimationStatus.completed;
       var lastSecond = AnimationStatus.completed;
       var lastThird = AnimationStatus.completed;
       var lastFourth = AnimationStatus.completed;
@@ -52,6 +51,7 @@ class CustomAnimation extends HookWidget {
 
         lastFirst = status;
       });
+      firstController.forward();
       secondControler.addStatusListener((status) {
         if (lastSecond == AnimationStatus.forward) {
           thirdControler.forward();
